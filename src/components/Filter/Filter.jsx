@@ -1,6 +1,18 @@
-import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+import { filterContacts } from 'redux/filter/filterSlice';
+import { getContacts, getFilter } from 'redux/selectors';
 
-const Filter = ({ value, onChange, contactsCount }) => {
+const Filter = () => {
+  const dispatch = useDispatch();
+  const contacts = useSelector(getContacts);
+  const filterValue = useSelector(getFilter);
+  const contactsCount = contacts.length;
+
+  const changeFilter = e => {
+    console.log('e.target.value: ', e.target.value);
+    dispatch(filterContacts(e.target.value))
+  };
+
   return (
     <form >
       <div>
@@ -10,18 +22,15 @@ const Filter = ({ value, onChange, contactsCount }) => {
         Find contacts by name
         <input
           type="text"
-          value={value}
-          onChange={onChange}
+          name='filter'
+          value={filterValue}
+          onChange={changeFilter}
         />
       </label>
     </form>
   )
 };
 
-Filter.propTypes = {
-  value: PropTypes.string,
-  onChange: PropTypes.func,
-  contactsCount: PropTypes.number
-}
+
 
 export default Filter;
